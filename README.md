@@ -89,3 +89,73 @@ No build tools, dependencies, or server required - it's a fully static website.
 ## License
 
 This project is open source and available for personal use.
+
+## How to Push to GitHub
+
+### Step 1: Install Git
+
+Download and install Git from [git-scm.com](https://git-scm.com/downloads) if not already installed.
+
+### Step 2: Create a GitHub Repository
+
+1. Go to [github.com](https://github.com) and log in
+2. Click the **+** icon (top right) > **New repository**
+3. Repository name: `portfolio`
+4. Keep it **Public**
+5. **Do NOT** check "Add a README file" (we already have one)
+6. Click **Create repository**
+
+### Step 3: Open Terminal / Command Prompt
+
+Open **Command Prompt** or **Git Bash** and navigate to your project folder:
+
+```bash
+cd C:\Users\DELL\Desktop\portfolio
+```
+
+### Step 4: Initialize Git & Push
+
+Run these commands one by one:
+
+```bash
+# Initialize git repository
+git init
+
+# Add all files to staging
+git add .
+
+# Create the first commit
+git commit -m "Initial commit - Portfolio website"
+
+# Set the main branch
+git branch -M main
+
+# Add your GitHub repository as remote (replace with your repo URL)
+git remote add origin https://github.com/narvdeshwar-1997/portfolio.git
+
+# Push to GitHub
+git push -u origin main
+```
+
+### Step 5: Verify
+
+Go to `https://github.com/narvdeshwar-1997/portfolio` in your browser. All your files should be visible there.
+
+### Deploy on GitHub Pages (Free Hosting)
+
+1. Go to your repository on GitHub
+2. Click **Settings** > **Pages** (left sidebar)
+3. Under **Source**, select **Branch: main** and folder **/ (root)**
+4. Click **Save**
+5. Wait 1-2 minutes, your site will be live at:
+   `https://narvdeshwar-1997.github.io/portfolio/`
+
+### Future Updates
+
+After making changes to your code, push updates with:
+
+```bash
+git add .
+git commit -m "Updated portfolio"
+git push
+```
