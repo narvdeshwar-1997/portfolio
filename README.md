@@ -160,11 +160,11 @@ git commit -m "Updated portfolio"
 git push
 ```
 
-### Deployment using AWS EC2, Jenkins & Nginx (CI/CD Setup)
+# Deployment using AWS EC2, Jenkins & Nginx (CI/CD Setup)
 
-# This portfolio is not only a static website but also deployed using a complete CI/CD pipeline on AWS.
+### This portfolio is not only a static website but also deployed using a complete CI/CD pipeline on AWS.
 
-# The goal was to understand how real-world deployment works — from writing code locally to making it live automatically after every update.
+### The goal was to understand how real-world deployment works — from writing code locally to making it live automatically after every update.
 
 # Tools Used for Deployment
 
@@ -178,16 +178,17 @@ git push
 
 5.SSH – Remote server access
 
-### How the Deployment Works
 
-# This project follows a simple CI/CD flow:
+# How the Deployment Works
+
+##This project follows a simple CI/CD flow:
 
 `Local Code → GitHub → Jenkins → EC2 → Nginx → Browser`
 
 
 # Whenever changes are pushed and merged into the main branch, Jenkins automatically pulls the latest code and deploys it to the live server.
 
-### EC2 Server Setup
+# EC2 Server Setup
 
 An Ubuntu EC2 instance was launched on AWS and configured for deployment.
 
@@ -201,12 +202,52 @@ Security Group ports opened:
 
 Connected to the server using SSH from a Windows system.
 
+# Connect to EC2 using SSH (Windows PowerShell)
+
+`ssh -i myportfolio-server-key.pem ubuntu@<EC2-Public-IP>`
+
+This command connects securely to the Ubuntu server running on AWS.
+
 ### Jenkins Installation & Configuration
 
 Jenkins was installed on the EC2 instance and accessed using:
 
+ Install Java (Required for Jenkins)
+`sudo apt update`
+`sudo apt install openjdk-17-jdk -y`
+`java -version`
+Jenkins requires Java to run.
+
+# Install Jenkins
+
+`curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
+/usr/share/keyrings/jenkins-keyring.asc > /dev/null`
+
+`echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \`
+`https://pkg.jenkins.io/debian-stable binary/ | sudo tee \`
+`/etc/apt/sources.list.d/jenkins.list > /dev/null`
+
+`sudo apt update`
+`sudo apt install jenkins -y`
+
+# Start Jenkins:
+
+`sudo systemctl start jenkins`
+`sudo systemctl enable jenkins`
+
+# Check status:
+
+`sudo systemctl status jenkins`
+
+# Jenkins runs on:
+
 `http://<EC2-Public-IP>:8080`
 
+ # Get Jenkins Admin Password
+ 
+`sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
+
+Use this password to unlock Jenkins in the browser.
 
 # After setup:
 
@@ -216,18 +257,62 @@ Installed required plugins
 
 Connected Jenkins to the GitHub repository
 
-### Nginx Web Server Setup
+# Nginx Web Server Setup
+
+Install Nginx (Web Server)
+
+`sudo apt install nginx -y`
+`sudo systemctl start nginx`
+`sudo systemctl enable nginx`
 
 Nginx was installed to host the website.
+
+Test:
+
+`http://<EC2-IP>`
+
+If "Welcome to nginx" appears → success.
+
+# Give Jenkins Permission to Deploy Website
+`echo "jenkins ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/jenkins`
+`sudo systemctl restart jenkins`
+
+This allows Jenkins to copy files into the web directory.
 
 Default web directory:
 
 `/var/www/html/`
 
+# Jenkinsfile Deployment Command
+
+In Jenkins pipeline, deployment step copies files:
+
+`sudo cp -r * /var/www/html/`
+
+This makes the updated website live automatically.
+
+# Run Jenkins Pipeline
+
+In Jenkins dashboard:
+
+`portfolio-pipeline → Build Now`
+
+This pulls the latest code and deploys it.
+
+# How the Full System Works
+
+1.Code is written locally
+2.Code is pushed to GitHub
+3.Jenkins pulls latest code from GitHub
+4.Jenkins checks required files
+5.Jenkins deploys files to Nginx folder
+6.Nginx serves website on port 80
+7.Users access site using EC2 public IP
+
 
 # All project files are deployed here so that the website becomes publicly accessible using the EC2 public IP.
 
-### Jenkins Pipeline (Automation)
+# Jenkins Pipeline (Automation)
 
 A Jenkinsfile is added to the repository to automate deployment.
 
@@ -241,7 +326,7 @@ The pipeline performs the following steps:
 
 This makes deployment automatic and repeatable.
 
-### CI/CD Workflow Demonstration
+# CI/CD Workflow Demonstration
 
 To verify that the pipeline works correctly, the following flow was tested:
 
@@ -259,7 +344,7 @@ To verify that the pipeline works correctly, the following flow was tested:
 
 This confirms that CI/CD is working properly.
 
-### Live Website
+# Live Website
 
 The website is hosted on the EC2 server and can be accessed using:
 
@@ -268,7 +353,7 @@ The website is hosted on the EC2 server and can be accessed using:
 
 Anyone with the link can open the portfolio in a browser.
 
-### What I Learned from This Project
+# What I Learned from This Project
 
 This project helped in understanding practical concepts such as:
 
@@ -284,7 +369,7 @@ This project helped in understanding practical concepts such as:
 
 6.Linux file permissions and deployment access
 
-### Challenges Faced During Setup
+# Challenges Faced During Setup
 
 While building this pipeline, I faced several issues:
 
@@ -298,7 +383,7 @@ While building this pipeline, I faced several issues:
 
 Each issue was resolved by reading logs, understanding errors, and fixing configurations step by step.
 
-### System Architecture (High-Level Flow)
+# System Architecture (High-Level Flow)
 
 `User Browser
      ↓
@@ -313,7 +398,7 @@ GitHub Repository (source code)`
 
  This shows how code travels from GitHub to the live website through Jenkins automation.
 
-### Proof of Deployment
+# Proof of Deployment
 
 A complete screen recording demonstrates:
 
