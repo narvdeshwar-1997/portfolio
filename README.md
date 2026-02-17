@@ -159,3 +159,170 @@ git add .
 git commit -m "Updated portfolio"
 git push
 ```
+
+### Deployment using AWS EC2, Jenkins & Nginx (CI/CD Setup)
+
+# This portfolio is not only a static website but also deployed using a complete CI/CD pipeline on AWS.
+
+# The goal was to understand how real-world deployment works — from writing code locally to making it live automatically after every update.
+
+# Tools Used for Deployment
+
+1.AWS EC2 (Ubuntu Server) – Hosting environment
+
+2.Jenkins – Continuous Integration & Deployment automation
+
+3.Nginx – Web server to serve the website
+
+4.GitHub – Source code management
+
+5.SSH – Remote server access
+
+### How the Deployment Works
+
+# This project follows a simple CI/CD flow:
+
+`Local Code → GitHub → Jenkins → EC2 → Nginx → Browser`
+
+
+# Whenever changes are pushed and merged into the main branch, Jenkins automatically pulls the latest code and deploys it to the live server.
+
+### EC2 Server Setup
+
+An Ubuntu EC2 instance was launched on AWS and configured for deployment.
+
+Security Group ports opened:
+
+1.Port 22 – SSH access
+
+2.Port 80 – Website (HTTP)
+
+3.Port 8080 – Jenkins Dashboard
+
+Connected to the server using SSH from a Windows system.
+
+### Jenkins Installation & Configuration
+
+Jenkins was installed on the EC2 instance and accessed using:
+
+`http://<EC2-Public-IP>:8080`
+
+
+# After setup:
+
+Created an admin user
+
+Installed required plugins
+
+Connected Jenkins to the GitHub repository
+
+### Nginx Web Server Setup
+
+Nginx was installed to host the website.
+
+Default web directory:
+
+`/var/www/html/`
+
+
+# All project files are deployed here so that the website becomes publicly accessible using the EC2 public IP.
+
+### Jenkins Pipeline (Automation)
+
+A Jenkinsfile is added to the repository to automate deployment.
+
+The pipeline performs the following steps:
+
+1.Pull latest code from GitHub
+
+2.Verify that index.html exists
+
+3.Copy all website files to the Nginx web directory
+
+This makes deployment automatic and repeatable.
+
+### CI/CD Workflow Demonstration
+
+To verify that the pipeline works correctly, the following flow was tested:
+
+1.Created a new branch
+
+2.Made a visible change in the website
+
+3.Created a Pull Request
+
+4.Merged into the main branch
+
+5.Triggered Jenkins build
+
+6.Website updated automatically on the live server
+
+This confirms that CI/CD is working properly.
+
+### Live Website
+
+The website is hosted on the EC2 server and can be accessed using:
+
+`http://<EC2-Public-IP>`
+
+
+Anyone with the link can open the portfolio in a browser.
+
+### What I Learned from This Project
+
+This project helped in understanding practical concepts such as:
+
+1.How CI/CD pipelines work in real environments
+
+2.How Jenkins automates build and deployment
+
+3.How EC2 instances host applications
+
+4.Difference between public IP and private IP
+
+5.Role of ports (80 for web, 8080 for Jenkins, 22 for SSH)
+
+6.Linux file permissions and deployment access
+
+### Challenges Faced During Setup
+
+While building this pipeline, I faced several issues:
+
+1.SSH connection errors due to key permission settings
+
+2.Jenkins installation and plugin dependency issues
+
+3.Deployment permission errors while copying files to Nginx directory
+
+4.Public IP change after stopping and restarting EC2
+
+Each issue was resolved by reading logs, understanding errors, and fixing configurations step by step.
+
+### System Architecture (High-Level Flow)
+
+`User Browser
+     ↓
+EC2 Public IP
+     ↓
+Nginx (serving website on port 80)
+     ↓
+Jenkins (running on port 8080)
+     ↓
+GitHub Repository (source code)`
+
+
+ This shows how code travels from GitHub to the live website through Jenkins automation.
+
+### Proof of Deployment
+
+A complete screen recording demonstrates:
+
+1.EC2 setup
+
+2.Jenkins pipeline execution
+
+3.Code update via Pull Request
+
+4.Automatic deployment
+
+5.Live website changes
